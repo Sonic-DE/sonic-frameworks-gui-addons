@@ -1,7 +1,8 @@
 /*
     SPDX-FileCopyrightText: 2009 Michael Leupold <lemma@confuego.org>
 
-    SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
+    SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR
+   LicenseRef-KDE-Accepted-LGPL
 */
 
 #include "kmodifierkeyinfo.h"
@@ -12,22 +13,12 @@
 
 #include "config.h"
 
-#if WITH_WAYLAND
-#include "kmodifierkeyinfoprovider_wayland.h"
-#endif
-
 #if WITH_X11
 #include "kmodifierkeyinfoprovider_xcb.h"
 #endif
 
 KModifierKeyInfoProvider *createProvider()
 {
-#if WITH_WAYLAND
-    if (qGuiApp->platformName() == QLatin1String("wayland")) {
-        return new KModifierKeyInfoProviderWayland;
-    }
-#endif
-
 #if WITH_X11
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         return new KModifierKeyInfoProviderXcb;

@@ -24,16 +24,17 @@ class KKeySequenceRecorderPrivate;
  * \inmodule KGuiAddons
  * \brief Record a QKeySequence by listening to key events in a window.
  *
- * After calling startRecording key events in the set window will be captured until a valid
- * QKeySequence has been recorded and gotKeySequence is emitted. See multiKeyShortcutsAllowed and
- * modifierlessAllowed for what constitutes a valid key sequence.
+ * After calling startRecording key events in the set window will be captured
+ * until a valid QKeySequence has been recorded and gotKeySequence is emitted.
+ * See multiKeyShortcutsAllowed and modifierlessAllowed for what constitutes a
+ * valid key sequence.
  *
- * During recording any shortcuts are inhibited and cannot be triggered. Either by using the
- * \l {https://cgit.freedesktop.org/wayland/wayland-protocols/tree/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml}
- * {keyboard-shortcuts-inhibit protocol} on Wayland or grabbing the keyboard.
+ * During recording any shortcuts are inhibited and cannot be triggered by
+ * grabbing the keyboard.
  *
- * For graphical elements that record key sequences and can optionally perform conflict checking
- * against existing shortcuts see KKeySequenceWidget and KeySequenceItem.
+ * For graphical elements that record key sequences and can optionally perform
+ * conflict checking against existing shortcuts see KKeySequenceWidget and
+ * KeySequenceItem.
  *
  * Porting from KF5 to KF6:
  *
@@ -74,10 +75,10 @@ class KGUIADDONS_EXPORT KKeySequenceRecorder : public QObject
     /*!
      * \property KKeySequenceRecorder::modifierlessAllowed
      *
-     * If key presses of "plain" keys without a modifier are considered to be a valid finished
-     * key combination.
-     * Plain keys  include letter and symbol keys and text editing keys (Return, Space, Tab,
-     * Backspace, Delete). Other keys like F1, Cursor keys, Insert, PageDown will always work.
+     * If key presses of "plain" keys without a modifier are considered to be a
+     * valid finished key combination. Plain keys  include letter and symbol keys
+     * and text editing keys (Return, Space, Tab, Backspace, Delete). Other keys
+     * like F1, Cursor keys, Insert, PageDown will always work.
      *
      * By default this is \c false.
      *
@@ -89,14 +90,14 @@ class KGUIADDONS_EXPORT KKeySequenceRecorder : public QObject
     /*!
      * \property KKeySequenceRecorder::multiKeyShortcutsAllowed
      *
-     * Controls the amount of key combinations that are captured until recording stops and gotKeySequence
-     * is emitted.
-     * By default  this is \c true and "Emacs-style" key sequences are recorded. Recording does not
-     * stop until four valid key combination have been recorded. Afterwards currentKeySequence().count()
-     * will be 4.
+     * Controls the amount of key combinations that are captured until recording
+     * stops and gotKeySequence is emitted. By default  this is \c true and
+     * "Emacs-style" key sequences are recorded. Recording does not stop until
+     * four valid key combination have been recorded. Afterwards
+     * currentKeySequence().count() will be 4.
      *
-     * Otherwise only one key combination is recorded before gotKeySequence is emitted with a
-     * QKeySequence with a count() of  1.
+     * Otherwise only one key combination is recorded before gotKeySequence is
+     * emitted with a QKeySequence with a count() of  1.
      * \sa QKeySequence
      */
     Q_PROPERTY(bool multiKeyShortcutsAllowed READ multiKeyShortcutsAllowed WRITE setMultiKeyShortcutsAllowed NOTIFY multiKeyShortcutsAllowedChanged)
@@ -104,10 +105,12 @@ class KGUIADDONS_EXPORT KKeySequenceRecorder : public QObject
     /*!
      * \property KKeySequenceRecorder::modifierOnlyAllowed
      *
-     * It makes it acceptable for the key sequence to be just a modifier (e.g. Shift or Control)
+     * It makes it acceptable for the key sequence to be just a modifier (e.g.
+     * Shift or Control)
      *
-     * By default, if only a modifier is pressed and then released, the component will remain waiting for the sequence.
-     * When enabled, it will take the modifier key as the key sequence.
+     * By default, if only a modifier is pressed and then released, the component
+     * will remain waiting for the sequence. When enabled, it will take the
+     * modifier key as the key sequence.
      *
      * By default this is \c false.
      *
@@ -119,11 +122,13 @@ class KGUIADDONS_EXPORT KKeySequenceRecorder : public QObject
     /*!
      * \property KKeySequenceRecorder::patterns
      *
-     * Specifies what components the recorded shortcut must have, for example whether the shortcut
-     * must contain only modifier keys (Modifier) or modifiers keys and a normal key (ModifierAndKey).
+     * Specifies what components the recorded shortcut must have, for example
+     * whether the shortcut must contain only modifier keys (Modifier) or
+     * modifiers keys and a normal key (ModifierAndKey).
      *
-     * The patterns property can contain one or more recording patterns. For example, if the recorder
-     * accepts both normal and modifier only shortcuts, e.g. Modifier | ModifierAndKey.
+     * The patterns property can contain one or more recording patterns. For
+     * example, if the recorder accepts both normal and modifier only shortcuts,
+     * e.g. Modifier | ModifierAndKey.
      *
      * By default this is ModifierAndKey.
      *
@@ -133,16 +138,19 @@ class KGUIADDONS_EXPORT KKeySequenceRecorder : public QObject
 
 public:
     /*!
-     * The Pattern type specifies what components the recorded shortcut must have, e.g. modifiers or just a key.
+     * The Pattern type specifies what components the recorded shortcut must have,
+     * e.g. modifiers or just a key.
      *
-     * \value Modifier The recorded shortcut must contain one or more modifier keys (Meta, Shift, Ctrl, or Alt).
-     * \value Key The recorded shortcut must contain only one regular key, e.g. "A".
-     * \value ModifierAndKey The recorded shortcut must contain one or more modifier keys followed by a regular key,
-     *  e.g. Meta+A.
-     * Note: with this pattern, special keys like "Insert" without any pressed modifier will be
-     * captured too. Please do not rely on this behavior and instead use Key | ModifierAndKey
-     * explicitly. The future versions of KKeySequenceRecorder are expected not to record special
-     * keys in the ModifierAndKey mode.
+     * \value Modifier The recorded shortcut must contain one or more modifier
+     * keys (Meta, Shift, Ctrl, or Alt).
+     * \value Key The recorded shortcut must contain only one regular key, e.g.
+     * "A".
+     * \value ModifierAndKey The recorded shortcut must contain one or more
+     * modifier keys followed by a regular key, e.g. Meta+A. Note: with this
+     * pattern, special keys like "Insert" without any pressed modifier will be
+     * captured too. Please do not rely on this behavior and instead use Key |
+     * ModifierAndKey explicitly. The future versions of KKeySequenceRecorder are
+     * expected not to record special keys in the ModifierAndKey mode.
      */
     enum Pattern {
         Modifier = 0x1,
@@ -184,25 +192,29 @@ public:
      * \deprecated[6.12]
      * Use setPatterns() instead
      */
-    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use setPatterns() instead") void setModifierlessAllowed(bool allowed);
+    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use setPatterns() instead")
+    void setModifierlessAllowed(bool allowed);
 
     /*!
      * \deprecated[6.12]
      * Use patterns() instead
      */
-    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patterns() instead") bool modifierlessAllowed() const;
+    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patterns() instead")
+    bool modifierlessAllowed() const;
 
     /*!
      * \deprecated[6.12]
      * Use setPatterns() instead
      */
-    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use setPatterns() instead") void setModifierOnlyAllowed(bool allowed);
+    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use setPatterns() instead")
+    void setModifierOnlyAllowed(bool allowed);
 
     /*!
      * \deprecated[6.12]
      * Use patterns() instead
      */
-    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patterns() instead") bool modifierOnlyAllowed() const;
+    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patterns() instead")
+    bool modifierOnlyAllowed() const;
 #endif
 
     void setPatterns(Patterns patterns);
@@ -218,8 +230,9 @@ Q_SIGNALS:
     /*!
      * This signal is emitted when a key sequence has been recorded.
      *
-     * Compared to currentKeySequenceChanged and currentKeySequence this is signal is not emitted
-     * continuously during recording but only after recording has finished.
+     * Compared to currentKeySequenceChanged and currentKeySequence this is signal
+     * is not emitted continuously during recording but only after recording has
+     * finished.
      */
     void gotKeySequence(const QKeySequence &keySequence);
 
@@ -228,8 +241,10 @@ Q_SIGNALS:
     void currentKeySequenceChanged();
     void multiKeyShortcutsAllowedChanged();
 #if KGUIADDONS_ENABLE_DEPRECATED_SINCE(6, 12)
-    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patternsChanged() instead") void modifierlessAllowedChanged();
-    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patternsChanged() instead") void modifierOnlyAllowedChanged();
+    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patternsChanged() instead")
+    void modifierlessAllowedChanged();
+    KGUIADDONS_DEPRECATED_VERSION(6, 12, "use patternsChanged() instead")
+    void modifierOnlyAllowedChanged();
 #endif
     void patternsChanged();
 

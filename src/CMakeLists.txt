@@ -86,31 +86,6 @@ if(WITH_DBUS)
     target_compile_definitions(KF6GuiAddons PRIVATE WITH_DBUS)
 endif()
 
-if(WITH_WAYLAND)
-    qt_generate_wayland_protocol_client_sources(KF6GuiAddons
-        PRIVATE_CODE
-        FILES
-            "${CMAKE_CURRENT_SOURCE_DIR}/recorder/keyboard-shortcuts-inhibit-unstable-v1.xml"
-            "${CMAKE_CURRENT_SOURCE_DIR}/systemclipboard/wlr-data-control-unstable-v1.xml"
-            "${PLASMA_WAYLAND_PROTOCOLS_DIR}/keystate.xml"
-            "${WaylandProtocols_DATADIR}/staging/ext-data-control/ext-data-control-v1.xml"
-            "${Wayland_DATADIR}/wayland.xml"
-    )
-    target_sources(KF6GuiAddons PRIVATE
-        recorder/waylandinhibition.cpp
-        systemclipboard/waylandclipboard.cpp
-        systemclipboard/wlrwaylandclipboard.cpp
-        util/kmodifierkeyinfoprovider_wayland.cpp
-        recorder/waylandinhibition_p.h
-        systemclipboard/waylandclipboard_p.h
-        systemclipboard/waylandpipewriterhelper.cpp
-        systemclipboard/wlrwaylandclipboard_p.h
-        util/kmodifierkeyinfoprovider_wayland.h
-    )
-    target_compile_definitions(KF6GuiAddons PRIVATE WITH_WAYLAND)
-    target_link_libraries(KF6GuiAddons PRIVATE Qt6::GuiPrivate Qt6::WaylandClient Wayland::Client)
-endif()
-
 if(WITH_X11)
     target_sources(KF6GuiAddons PRIVATE util/kmodifierkeyinfoprovider_xcb.cpp util/kmodifierkeyinfoprovider_xcb.h)
     target_link_libraries(KF6GuiAddons PRIVATE X11::Xkb XCB::XCB)
