@@ -12,7 +12,6 @@
 #include "keyboardgrabber_p.h"
 #include "kguiaddons_debug.h"
 #include "shortcutinhibition_p.h"
-#include "waylandinhibition_p.h"
 
 #include <QGuiApplication>
 #include <QKeyEvent>
@@ -23,7 +22,8 @@
 #include <array>
 #include <chrono>
 
-/// Singleton whose only purpose is to tell us about other sequence recorders getting started
+/// Singleton whose only purpose is to tell us about other sequence recorders
+/// getting started
 class KKeySequenceRecorderGlobal : public QObject
 {
     Q_OBJECT
@@ -43,7 +43,9 @@ class KKeySequenceRecorderPrivate : public QObject
     Q_OBJECT
 public:
     // Copy of QKeySequencePrivate::MaxKeyCount from private header
-    enum { MaxKeyCount = 4 };
+    enum {
+        MaxKeyCount = 4
+    };
 
     KKeySequenceRecorderPrivate(KKeySequenceRecorder *qq);
 
@@ -316,7 +318,8 @@ bool KKeySequenceRecorderPrivate::isKeyCombinationAccepted(QKeyCombination keyCo
         const bool patternIncludesKey = pattern & (KKeySequenceRecorder::Key | KKeySequenceRecorder::ModifierAndKey);
 
         if (inputIncludesModifiers != patternIncludesModifiers) {
-            // TODO KF7: drop isOkWhenModifierless() and require users to pass the Key pattern explicitly
+            // TODO KF7: drop isOkWhenModifierless() and require users to pass the Key
+            // pattern explicitly
             if (!(patternIncludesModifiers && patternIncludesKey && isOkWhenModifierless(keyCombination.key()))) {
                 continue;
             }
@@ -344,7 +347,8 @@ static QKeySequence appendToSequence(const QKeySequence &sequence, int key)
     // When the user presses Mod(s)+Alt+Print, the SysReq event is fired only
     // when the Alt key is released. Before we get the Mod(s)+SysReq event, we
     // first get a Mod(s)+Alt event, which we have to ignore.
-    // Known limitation: only works when the Alt key is released before the Mod(s) key(s).
+    // Known limitation: only works when the Alt key is released before the Mod(s)
+    // key(s).
     if ((key & ~Qt::KeyboardModifierMask) == Qt::Key_SysReq) {
         key = Qt::Key_Print | (key & Qt::KeyboardModifierMask) | Qt::AltModifier;
         if (sequence.count() > 0 && (sequence[sequence.count() - 1].toCombined() & ~Qt::KeyboardModifierMask) == Qt::Key_Alt) {
@@ -641,13 +645,7 @@ void KKeySequenceRecorder::setWindow(QWindow *window)
         qCDebug(KGUIADDONS_LOG) << "listening for events in" << window;
     }
 
-    if (qGuiApp->platformName() == QLatin1String("wayland")) {
-#ifdef WITH_WAYLAND
-        d->m_inhibition.reset(new WaylandInhibition(window));
-#endif
-    } else {
-        d->m_inhibition.reset(new KeyboardGrabber(window));
-    }
+    d->m_inhibition.reset(new KeyboardGrabber(window));
 
     d->m_window = window;
 

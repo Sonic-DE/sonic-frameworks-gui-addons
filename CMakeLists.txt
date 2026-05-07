@@ -41,13 +41,9 @@ include(ECMGenerateQDoc)
 option(BUILD_GEO_SCHEME_HANDLER "Build the geo: URI scheme handler. Disable this if you are building two major versions for co-installability in the older variant." ON)
 
 if(UNIX AND NOT APPLE AND NOT ANDROID AND NOT HAIKU)
-    option(WITH_WAYLAND "Build with support for KModifierKeyInfo, KSystemClipboard and KKeySequenceRecorder inhibiting shortcuts on Wayland" ON)
-    add_feature_info(WAYLAND ${WITH_WAYLAND} "KeySequenceEditor inhibiting shortcuts on Wayland")
-
     option(WITH_X11 "Build with support for KModifierKeyInfo on X11" ON)
     add_feature_info(X11 ${WITH_X11} "KeySequenceEditor inhibiting shortcuts on X11")
 else()
-    set(WITH_WAYLAND OFF)
     set(WITH_X11 OFF)
 endif()
 
@@ -55,28 +51,12 @@ set(REQUIRED_QT_VERSION 6.9.0)
 
 find_package(Qt6Gui ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
-if (WITH_WAYLAND)
-    # Qt6GuiPrivate  must be found before Qt6WaylandClient
-    if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
-        find_package(Qt6GuiPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
-    else()
-        find_package(Qt6Gui ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Private)
-    endif()
-endif()
-
 if (WITH_X11)
     find_package(X11 REQUIRED MODULE)
     find_package(XCB REQUIRED MODULE COMPONENTS XCB)
     if(NOT QT_FEATURE_xcb)
         message(FATAL_ERROR "Qt xcb feature is missing for compilation with X11")
     endif()
-endif()
-
-if (WITH_WAYLAND)
-    find_package(WaylandProtocols 1.39 REQUIRED)
-    find_package(PlasmaWaylandProtocols 1.15.0 REQUIRED)
-    find_package(Qt6WaylandClient ${REQUIRED_QT_VERSION} REQUIRED CONFIG)
-    find_package(Wayland 1.9 REQUIRED Client)
 endif()
 
 # shall we use DBus?
