@@ -33,7 +33,6 @@ namespace KJobWindows
  * \li by KIO::AbstractJobInteractionInterface as parent widget for rename/skip dialogs
  * and possibly more.
  * \li by KIO::DropJob as parent widget of popup menus.
- * This is required on Wayland to properly position the menu.
  * \endlist
  *
  * \since 6.0
