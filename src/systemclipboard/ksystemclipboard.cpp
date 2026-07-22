@@ -36,6 +36,24 @@ QString KSystemClipboard::text(QClipboard::Mode mode)
     return QString();
 }
 
+bool KSystemClipboard::ownsSelection() const
+{
+    // This is a fake virtual, but we're limited due to ABI concerns.
+    // In hindsight I should have added a facade
+    if (const auto qtClipboard = qobject_cast<const QtClipboard *>(this)) {
+        return qtClipboard->ownsSelection();
+    }
+    return false;
+}
+
+bool KSystemClipboard::ownsClipboard() const
+{
+    if (const auto qtClipboard = qobject_cast<const QtClipboard *>(this)) {
+        return qtClipboard->ownsClipboard();
+    }
+    return false;
+}
+
 KSystemClipboard::KSystemClipboard(QObject *parent)
     : QObject(parent)
 {
