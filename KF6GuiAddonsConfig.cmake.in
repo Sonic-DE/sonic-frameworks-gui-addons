@@ -13,6 +13,11 @@ if (NOT @BUILD_SHARED_LIBS@)
 
     if (@WITH_DBUS@)
         find_dependency(Qt6DBus @REQUIRED_QT_VERSION@)
+        if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
+            find_dependency(Qt6GuiPrivate @REQUIRED_QT_VERSION@)
+        else()
+            find_dependency(Qt6Gui @REQUIRED_QT_VERSION@ COMPONENTS Private)
+        endif()
     endif()
 endif()
 
