@@ -28,3 +28,4 @@ CMakeLists.txt.user*
 .cache
 .qmlls.ini
 .ccls-cache
+.gradle
