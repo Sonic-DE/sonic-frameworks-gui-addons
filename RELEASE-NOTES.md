@@ -2,6 +2,10 @@
 
 Sonic Frameworks GUI Addons provides small interface helpers that SonicDE apps share, such as color tools, keyboard shortcut handling and progress windows.
 
+## 6.31.0.1 (2026-11-10)
+
+- Behind the scenes: repository tidying.
+
 ## 6.31.0 (2026-10-20)
 
 - Behind the scenes: version update.
